@@ -1,7 +1,6 @@
 <p align="center">
-    <a href="https://nodered.org/"><img src="https://img.shields.io/badge/Platform-Node--RED-brown.svg" alt="Platform"></a>
-    <a href="https://flows.nodered.org/node/node-red-contrib-friendly-id"><img src="https://img.shields.io/npm/v/node-red-contrib-friendly-id/latest?color=brightgreen&label=ver@latest" alt="npm@latest"></a>
-    <img src="https://img.shields.io/badge/npm-6.9.0-blue.svg" alt="npm"><br />
+    <a href="https://nodered.org/"><img src="https://img.shields.io/badge/Platform-Node--RED-brown.svg" alt="Platform"></a> <a href="https://flows.nodered.org/node/node-red-contrib-friendly-id"><img src="https://img.shields.io/npm/v/node-red-contrib-friendly-id/latest?color=brightgreen&label=release" alt="npm@latest"></a> <a href="https://packagephobia.com/result?p=node-red-contrib-friendly-id"><img src="https://packagephobia.com/badge?p=node-red-contrib-friendly-id" alt="install size"></a> <br />
+    <img src="https://img.shields.io/badge/npm-6.9.0-blue.svg" alt="npm">
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/npm/l/node-red-contrib-friendly-id" alt="License: MIT"></a>
     <a href="#"><img src="https://img.shields.io/snyk/vulnerabilities/npm/node-red-contrib-friendly-id" alt="vulnerabilities"></a>    
 </p>
