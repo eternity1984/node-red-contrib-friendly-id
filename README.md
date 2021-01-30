@@ -1,3 +1,11 @@
+<p align="center">
+    <a href="https://nodered.org/"><img src="https://img.shields.io/badge/Platform-Node--RED-brown.svg" alt="Platform"></a>
+    <a href="https://flows.nodered.org/node/node-red-contrib-friendly-id"><img src="https://img.shields.io/npm/v/node-red-contrib-friendly-id/latest?color=brightgreen&label=ver@latest" alt="npm@latest"></a>
+    <img src="https://img.shields.io/badge/npm-6.9.0-blue.svg" alt="npm"><br />
+    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/npm/l/node-red-contrib-friendly-id" alt="License: MIT"></a>
+    <a href="#"><img src="https://img.shields.io/snyk/vulnerabilities/npm/node-red-contrib-friendly-id" alt="vulnerabilities"></a>    
+</p>
+
 # node-red-contrib-friendly-id
 A node for [Node-RED](http://www.nodered.org/) that converts a given UUID to a URL-friendly ID(short-uuid). You can also generate secure ID using [nanoid](https://github.com/ai/nanoid) and [short-uuid](https://github.com/oculus42/short-uuid).
 
@@ -9,8 +17,12 @@ $ npm install node-red-contrib-friendly-id
 
 ## Usage
 
-### Convert from/to UUID 
-![encode and decode](.images/encode-decode.png)
+### from UUID / to UUID
+![encode-decode](.images/encode-decode.gif)
+
+
+### Generate Friendly ID
+![generate](.images/generate-id.gif)
 
 ## Acknowledgements
 This project uses the following open source software:
