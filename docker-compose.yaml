@@ -1,0 +1,18 @@
+# using docker-compose for local code testing and development
+version: '3'
+services:
+  node-red-docker:
+    image: nodered/node-red:1.2.5
+    container_name: nodered
+    user: root
+    ports:
+    - "1880:1880"
+    volumes:
+      - ./:/data/node-red-contrib-friendly-id/
+    entrypoint: >
+      bash -c "cd /data &&
+      npm install node-red-contrib-friendly-id &&
+      cd /usr/src/node-red &&
+      npm start -- --userDir /data"
+networks: {}
+volumes: {}

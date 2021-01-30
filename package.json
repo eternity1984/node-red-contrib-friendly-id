@@ -1,0 +1,28 @@
+{
+    "name": "node-red-contrib-friendly-id",
+    "version": "0.1.0-beta.0",
+    "keywords": [
+        "node-red",
+        "uuid",
+        "nanoid",
+        "short-uuid",
+        "friendly-id",
+        "url-friendly"
+    ],
+    "dependencies": {
+        "short-uuid": "^4.1.0",
+        "nanoid": "^3.1.20",
+        "nanoid-dictionary": "^4.2.0"
+    },
+    "license": "MIT",
+    "node-red": {
+        "nodes": {
+            "friendly-id": "node/friendlyid.js"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/eternity1984/node-red-contrib-friendly-id.git"
+    },
+    "description": "A node for node-red that converts a given UUID to a URL-friendly ID(short-uuid). You can also generate secure ID using nanoid and short-uuid"
+}
