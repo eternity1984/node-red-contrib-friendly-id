@@ -94,8 +94,8 @@
                     $("#node-tostatus-line").show();
                 } else {
                     $("#node-tostatus-line").hide();
-                    node.statusType = "auto";
-                    node.statusVal = "";
+                    node.statusType = node._def.defaults.statusType.value;
+                    node.statusVal = node._def.defaults.statusVal.value;
                     $("#node-input-typed-status").typedInput('type', node.statusType);
                     $("#node-input-typed-status").typedInput('value', node.statusVal);
                 }
@@ -107,18 +107,20 @@
                     $('#node-nodeid-line').show()
                 } else {
                     $('#node-nodeid-line').hide()
-                    node.charset = "DEFAULT";
+                    node.charset = node._def.defaults.charset.value;
+                    node.charlen = node._def.defaults.charlen.value;
                     $('#node-input-charset').val(node.charset);
+                    $('#node-input-charlen').val(node.charlen);
                 }
             });
             $('#node-input-charset').change(function(e) {
                 if ($('option:selected', this).val() === "CUSTOM") {
-                    $("#node-input-customs").val(node.customs || "");
+                    $("#node-input-customs").val(node.customs || node._def.defaults.customs.value);
                     $('#node-nodeid-customs-line').show();
                 } else {
                     $('#node-nodeid-customs-line').hide();
-                    node.customs = "";
-                    $("#node-input-customs").val("");
+                    node.customs = node._def.defaults.customs.value;
+                    $("#node-input-customs").val(node.customs);
                 }
             });
         },
