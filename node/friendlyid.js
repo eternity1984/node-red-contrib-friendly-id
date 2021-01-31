@@ -32,7 +32,7 @@ module.exports = function(RED) {
                     }
                 } else {
                     RED.util.setMessageProperty(msg, "payload", data, false);
-                    node.send(msg);
+                    send(msg);
                     if (done) {
                         done();
                     }
@@ -43,7 +43,7 @@ module.exports = function(RED) {
                         } else {
                             var targetVal = "payload";
                             if (definition.statusType === "msg") {
-                                targetVal = definition.statusVal || "payload"
+                                targetVal = definition.statusVal || "payload";
                             }
                             output = RED.util.getMessageProperty(msg, targetVal);
                         }

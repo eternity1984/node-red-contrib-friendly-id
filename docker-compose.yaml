@@ -11,7 +11,7 @@ services:
       - ./:/data/node-red-contrib-friendly-id/
     entrypoint: >
       bash -c "cd /data &&
-      npm install node-red-contrib-friendly-id &&
+      npm link node-red-contrib-friendly-id &&
       cd /usr/src/node-red &&
       npm start -- --userDir /data"
 networks: {}
