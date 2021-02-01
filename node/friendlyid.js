@@ -75,7 +75,7 @@ module.exports = function(RED) {
         } else if (definition.outputToType === "msg") {
             target = definition.outputToVal;
         }
-        RED.util.setMessageProperty(msg, target, data, false);
+        RED.util.setMessageProperty(msg, target, data, true);
         return target;
     }
 
@@ -115,6 +115,8 @@ module.exports = function(RED) {
                 callback(generate_nanoid(node, msg, definition), null);
             } else if (mode === "GENERATE-SHORTID") {
                 callback(shortid().new(), null);
+            } else if (mode === "GENERATE-UUID4") {
+                callback(shortid().uuid(), null);
             } else {
                 // converts UUIDs using short-uuid
                 var input = getInputVal(node, msg, definition);

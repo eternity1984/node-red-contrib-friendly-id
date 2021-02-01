@@ -158,7 +158,9 @@
                         $('#node-nodeid-line').show()
                         inplace = false;
                         break;
+
                     case "GENERATE-SHORTID":
+                    case "GENERATE-UUID4":
                         inplace = false;
                         // break;
 
@@ -206,6 +208,7 @@
         <select type="text" id="node-input-mode" style="width:70%">
             <option value="ENCODE" data-i18n="label.mode._encode"></option>
             <option value="DECODE" data-i18n="label.mode._decode"></option>
+            <option value="GENERATE-UUID4" data-i18n="label.mode._uuid"></option>
             <option value="GENERATE-SHORTID" data-i18n="label.mode._shortid"></option>
             <option value="GENERATE-NANOID" data-i18n="label.mode._nanoid"></option>
         </select>

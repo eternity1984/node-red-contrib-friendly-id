@@ -3,6 +3,7 @@
         "mode": {
             "title": "Mode",
             "undefiend": "Oops!! Try looking at your node configuration(mode).",
+            "_uuid": "Generate a random UUID v4",
             "_nanoid": "Generate a random FriendlyID(nanoid)",
             "_shortid": "Generate a random FriendlyID(short-uuid)",
             "_encode": "Converts a UUID to a FriendlyID(short-uuid)",
