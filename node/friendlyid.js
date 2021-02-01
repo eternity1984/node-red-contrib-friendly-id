@@ -31,7 +31,7 @@ module.exports = function(RED) {
                         node.status({ fill: "red", shape: "dot", text: "Failed" });
                     }
                 } else {
-                    var target = setOutputVal(node, msg, definition, data);
+                    setOutputVal(node, msg, definition, data);
 
                     send(msg);
                     if (done) {
