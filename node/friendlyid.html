@@ -96,14 +96,9 @@
                 label: node._("label.autoType"),
                 hasValue: false
             };
-            var givenValType = {
-                value: "input",
-                label: node._("label.givenValType"),
-                hasValue: false
-            };
             $("#node-input-typed-status").typedInput({
                 default: "auto",
-                types: [givenValType, autoType, "msg"],
+                types: [autoType, "msg"],
                 typeField: $("#node-input-statusType")
             });
 

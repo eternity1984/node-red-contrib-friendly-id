@@ -26,7 +26,6 @@
         },
         "tostatus": "node status (64 characters)",
         "autoType": "Same as output",
-        "givenValType": "Same as input",
         "inputFrom": "Input from",
         "outputTo": "Output to",
         "defaultType": "msg.payload",

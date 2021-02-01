@@ -19,7 +19,6 @@ module.exports = function(RED) {
         node.on("input", function(msg, send, done) {
             send = send || (() => node.send.apply(node, arguments));
 
-            var input = RED.util.getMessageProperty(msg, "payload");
             request(node, msg, definition, function(data, err) {
                 if (err) {
                     if (done) {
@@ -41,8 +40,6 @@ module.exports = function(RED) {
                         var output = "";
                         if (definition.statusType === "auto") {
                             output = data;
-                        } else if (definition.statusType === "input") {
-                            output = input;
                         } else if (definition.statusType === "msg") {
                             output = RED.util.getMessageProperty(msg, definition.statusVal) || "";
                         }
