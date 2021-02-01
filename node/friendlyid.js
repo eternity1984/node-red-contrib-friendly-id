@@ -31,21 +31,20 @@ module.exports = function(RED) {
                         node.status({ fill: "red", shape: "dot", text: "Failed" });
                     }
                 } else {
-                    RED.util.setMessageProperty(msg, "payload", data, false);
+                    var target = setOutputVal(node, msg, definition, data);
+
                     send(msg);
                     if (done) {
                         done();
                     }
                     if (definition.tostatus) {
                         var output = "";
-                        if (definition.statusType === "input") {
+                        if (definition.statusType === "auto") {
+                            output = data;
+                        } else if (definition.statusType === "input") {
                             output = input;
-                        } else {
-                            var targetVal = "payload";
-                            if (definition.statusType === "msg") {
-                                targetVal = definition.statusVal || "payload";
-                            }
-                            output = RED.util.getMessageProperty(msg, targetVal);
+                        } else if (definition.statusType === "msg") {
+                            output = RED.util.getMessageProperty(msg, definition.statusVal) || "";
                         }
                         if (output.length > 64) {
                             output = output.substr(0, 64) + "...";
@@ -57,32 +56,55 @@ module.exports = function(RED) {
         });
     }
 
+    function getInputVal(node, msg, definition) {
+        var target = "payload"; // auto
+        if (definition.inputFromType === "msg") {
+            target = definition.inputFromVal;
+        }
+        var input = RED.util.getMessageProperty(msg, target);
+        if (input === undefined) {
+            throw Error("Missing input property: msg." + target);
+        }
+        return input;
+    }
+
+    function setOutputVal(node, msg, definition, data) {
+        var target = "payload"; // auto
+        if ((definition.outputToType === "inplace") && (definition.inputFromType === "msg")) {
+            target = definition.inputFromVal;
+        } else if (definition.outputToType === "msg") {
+            target = definition.outputToVal;
+        }
+        RED.util.setMessageProperty(msg, target, data, false);
+        return target;
+    }
+
     function generate_nanoid(node, msg, definition) {
         var size = Number(definition.charlen);
         switch (definition.charset) {
             case "DEFAULT":
-                return nanoid(size)
+                return nanoid(size);
 
             case "NUMERIC":
-                return customAlphabet(nanodict.numbers, size)()
+                return customAlphabet(nanodict.numbers, size)();
 
             case "LOWERCASE":
-                return customAlphabet(nanodict.lowercase, size)()
+                return customAlphabet(nanodict.lowercase, size)();
 
             case "UPPERCASE":
-                return customAlphabet(nanodict.uppercase, size)()
+                return customAlphabet(nanodict.uppercase, size)();
 
             case "ALPHANUMERIC":
-                return customAlphabet(nanodict.numbers + nanodict.lowercase + nanodict.uppercase, size)()
+                return customAlphabet(nanodict.numbers + nanodict.lowercase + nanodict.uppercase, size)();
 
             case "NO-LOOKALIKES":
-                return customAlphabet(nanodict.nolookalikes, size)()
+                return customAlphabet(nanodict.nolookalikes, size)();
 
             case "NO-LOOKALIKES-SAFE":
-                return customAlphabet(nanodict.nolookalikesSafe, size)()
+                return customAlphabet(nanodict.nolookalikesSafe, size)();
 
             case "CUSTOM":
-                return customAlphabet(definition.customs, size)()
+                return customAlphabet(definition.customs, size)();
         }
     }
 
@@ -95,7 +117,7 @@ module.exports = function(RED) {
                 callback(shortid().new(), null);
             } else {
                 // converts UUIDs using short-uuid
-                var input = RED.util.getMessageProperty(msg, "payload")
+                var input = getInputVal(node, msg, definition);
                 if (mode === "DECODE") {
                     // friendly-id -> uuid
                     callback(shortid().toUUID(input), null);
@@ -104,7 +126,7 @@ module.exports = function(RED) {
                     callback(shortid().fromUUID(input), null);
                 } else {
                     // undefined
-                    callback(null, Error(RED._("label.mode.undefiend")))
+                    callback(null, Error(RED._("label.mode.undefiend")));
                 }
             }
         } catch (e) {
