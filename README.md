@@ -1,9 +1,7 @@
-<p align="center">
-    <a href="https://nodered.org/"><img src="https://img.shields.io/badge/Platform-Node--RED-brown.svg" alt="Platform"></a> <a href="https://flows.nodered.org/node/node-red-contrib-friendly-id"><img src="https://img.shields.io/npm/v/node-red-contrib-friendly-id/latest?color=brightgreen&label=release" alt="npm@latest"></a> <a href="https://packagephobia.com/result?p=node-red-contrib-friendly-id"><img src="https://packagephobia.com/badge?p=node-red-contrib-friendly-id" alt="install size"></a> <br />
-    <img src="https://img.shields.io/badge/npm-6.9.0-blue.svg" alt="npm">
-    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/npm/l/node-red-contrib-friendly-id" alt="License: MIT"></a>
-    <a href="#"><img src="https://img.shields.io/snyk/vulnerabilities/npm/node-red-contrib-friendly-id" alt="vulnerabilities"></a>    
-</p>
+[![platform](https://img.shields.io/badge/platform-Node--RED-brown.svg)](https://nodered.org/) [![Release Ver](https://img.shields.io/npm/v/node-red-contrib-friendly-id?color=limegreen&label=release)](https://flows.nodered.org/node/node-red-contrib-friendly-id) [![install size](https://packagephobia.com/badge?p=node-red-contrib-friendly-id)](https://packagephobia.com/result?p=node-red-contrib-friendly-id) [![downloads](https://img.shields.io/npm/dm/node-red-contrib-friendly-id.svg)](https://www.npmjs.com/package/node-red-contrib-friendly-id) ![npm version](https://img.shields.io/badge/npm-6.9.0-blue.svg) [![License](https://img.shields.io/github/license/eternity1984/node-red-contrib-friendly-id)](License) [![dependencies Status](https://status.david-dm.org/gh/eternity1984/node-red-contrib-friendly-id.svg)](https://david-dm.org/eternity1984/node-red-contrib-friendly-id) [![Total alerts](https://img.shields.io/lgtm/alerts/g/eternity1984/node-red-contrib-friendly-id.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/eternity1984/node-red-contrib-friendly-id/alerts/) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/eternity1984/node-red-contrib-friendly-id.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/eternity1984/node-red-contrib-friendly-id/context:javascript) ...
+
+
+
 
 # node-red-contrib-friendly-id
 A node for [Node-RED](http://www.nodered.org/) that converts a given UUID to a URL-friendly ID(short-uuid). You can also generate secure ID using [nanoid](https://github.com/ai/nanoid) and [short-uuid](https://github.com/oculus42/short-uuid).
