@@ -41,7 +41,7 @@ module.exports = function(RED) {
                         if (definition.statusType === "auto") {
                             output = data;
                         } else if (definition.statusType === "msg") {
-                            output = RED.util.getMessageProperty(msg, definition.statusVal) || "";
+                            output = RED.util.getMessageProperty(msg, definition.statusVal);
                         }
                         if (output.length > 64) {
                             output = output.substr(0, 64) + "...";

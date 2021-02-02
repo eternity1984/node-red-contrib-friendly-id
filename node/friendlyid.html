@@ -71,9 +71,9 @@
         oneditprepare: function() {
             var node = this;
 
-            var defaultType = {
+            var defaultInOutType = {
                 value: "auto",
-                label: node._("label.defaultType"),
+                label: node._("label.defaultInOutType"),
                 hasValue: false
             }
             var inplaceType = {
@@ -82,7 +82,7 @@
                 hasValue: false
             }
             var createTypedOutputTypes = function(inplace = true) {
-                var dynamicTypes = [defaultType];
+                var dynamicTypes = [defaultInOutType];
                 if (inplace) {
                     dynamicTypes.push(inplaceType);
                 }
@@ -91,14 +91,14 @@
 
             };
 
-            var autoType = {
+            var defaultStatusType = {
                 value: "auto",
-                label: node._("label.autoType"),
+                label: node._("label.defaultStatusType"),
                 hasValue: false
             };
             $("#node-input-typed-status").typedInput({
                 default: "auto",
-                types: [autoType, "msg"],
+                types: [defaultStatusType, "msg"],
                 typeField: $("#node-input-statusType")
             });
 
@@ -110,7 +110,7 @@
 
             $("#node-input-typed-inputFrom").typedInput({
                 default: "auto",
-                types: [defaultType, "msg"],
+                types: [defaultInOutType, "msg"],
                 typeField: $("#node-input-inputFromType")
             })
             $("#node-input-typed-inputFrom").typedInput('type', node.inputFromType || node._def.defaults.inputFromType.value);

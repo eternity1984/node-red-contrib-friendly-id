@@ -25,10 +25,10 @@
             "title": "Size"
         },
         "tostatus": "node status (64 characters)",
-        "autoType": "Same as output",
+        "defaultStatusType": "Same as output",
         "inputFrom": "Input from",
         "outputTo": "Output to",
-        "defaultType": "msg.payload",
+        "defaultInOutType": "msg.payload",
         "inplaceType": "Changes directly a given input property"
     }
 }

@@ -25,10 +25,10 @@
             "title": "サイズ"
         },
         "tostatus": "ノード状態 (64 文字)",
-        "autoType": "出力と同じ",
+        "defaultStatusType": "出力と同じ",
         "inputFrom": "入力元",
         "outputTo": "出力先",
-        "defaultType": "msg.payload",
+        "defaultInOutType": "msg.payload",
         "inplaceType": "入力プロパティに上書き"
     }
 }
