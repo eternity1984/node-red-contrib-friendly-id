@@ -31,15 +31,17 @@ $ npm install node-red-contrib-friendly-id
 ## v0.2.x migration [example flows]
 In version `0.1.x`, the node was depend on a `payload` property (`msg.payload`).  
 In version `0.2.x`, these restrictions will be lifted, and the usability of input/output has been improved.
+prevents node wires from becoming complicated.
 
 
-**Okay, so let's walk through some use case scenarios:**
+**Okay, so let's walk through some use case scenarios...**
 
+> **Case 1:**  
 > How do I set a generated `short-uuid` to `msg.myid` property while preserving the original `msg.payload` property?
 
-![How?](.images/how.png)
+![How?](.images/timestamp-shortuuid-how.png)
 
-An explanation of each of the properties and its expected values are as follows:
+The expected values of each property are as follows:
 
 ```js
 {
@@ -62,7 +64,24 @@ An explanation of each of the properties and its expected values are as follows:
 [{"id":"a88c20f.676d3e","type":"debug","z":"f6f2187d.f17ca8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"true","targetType":"full","statusVal":"","statusType":"auto","x":450,"y":340,"wires":[]},{"id":"c04fc85.e6ef838","type":"friendly-id","z":"f6f2187d.f17ca8","name":"","mode":"GENERATE-SHORTID","charlen":21,"charset":"DEFAULT","customs":"","tostatus":false,"statusVal":"","statusType":"auto","inputFromVal":"","inputFromType":"auto","outputToVal":"myid","outputToType":"msg","x":300,"y":340,"wires":[["a88c20f.676d3e"]]},{"id":"68101c27.6c4f84","type":"inject","z":"f6f2187d.f17ca8","name":"","props":[{"p":"payload"}],"repeat":"","crontab":"","once":false,"onceDelay":0.1,"topic":"","payload":"","payloadType":"date","x":140,"y":340,"wires":[["c04fc85.e6ef838"]]}]
 ```
 
----
+
+> **Case 2:**  
+> How do I directly overwrite the converted UUID to a property used for input?
+
+![how?](.images/changes-param-directly-how.png)
+
+
+**v0.1.x:**
+
+![v0.1.x](.images/changes-param-directly-v0.1.x.png)
+
+**v0.2.x (migration)**
+
+![v0.2.x](.images/changes-param-directly-v0.2.x.png)
+
+```json
+[{"id":"130a8293.06421d","type":"http response","z":"f6f2187d.f17ca8","name":"","statusCode":"","headers":{},"x":510,"y":380,"wires":[]},{"id":"283657c9.5e37d8","type":"friendly-id","z":"f6f2187d.f17ca8","name":"","mode":"DECODE","charlen":21,"charset":"DEFAULT","customs":"","tostatus":false,"statusVal":"","statusType":"auto","inputFromVal":"req.params.userid","inputFromType":"msg","outputToVal":"req.params.userid","outputToType":"msg","x":360,"y":380,"wires":[["19a63487.dc85bb","130a8293.06421d"]]},{"id":"92bdbc63.ac83f","type":"http in","z":"f6f2187d.f17ca8","name":"","url":"/api/v2/users/:userid","method":"get","upload":false,"swaggerDoc":"","x":150,"y":380,"wires":[["283657c9.5e37d8"]]},{"id":"19a63487.dc85bb","type":"debug","z":"f6f2187d.f17ca8","name":"","active":true,"tosidebar":true,"console":false,"tostatus":false,"complete":"req.params.userid","targetType":"msg","statusVal":"","statusType":"auto","x":560,"y":340,"wires":[]}]
+```
 
 
 ## Acknowledgements
