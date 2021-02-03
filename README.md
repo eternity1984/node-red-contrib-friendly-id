@@ -30,8 +30,7 @@ $ npm install node-red-contrib-friendly-id
 
 ## v0.2.x migration [example flows]
 In version `0.1.x`, the node was depend on a `payload` property (`msg.payload`).  
-In version `0.2.x`, these restrictions will be lifted, and the usability of input/output has been improved.
-prevents node wires from becoming complicated.
+In version `0.2.x`, these restrictions will be lifted to prevents node wires from becoming complicated.
 
 
 **Okay, so let's walk through some use case scenarios...**
