@@ -8,11 +8,5 @@ services:
     ports:
     - "1880:1880"
     volumes:
-      - ./:/data/node-red-contrib-friendly-id/
-    entrypoint: >
-      bash -c "cd /data &&
-      npm link node-red-contrib-friendly-id &&
-      cd /usr/src/node-red &&
-      npm start -- --userDir /data"
-networks: {}
+      - '.:/data/node_modules/node-red-contrib-friendly-id'
 volumes: {}

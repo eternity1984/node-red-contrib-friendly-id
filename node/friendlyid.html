@@ -48,6 +48,18 @@
             },
             statusType: {
                 value: "auto"
+            },
+            inputFromVal: {
+                value: ""
+            },
+            inputFromType: {
+                value: "auto"
+            },
+            outputToVal: {
+                value: ""
+            },
+            outputToType: {
+                value: "auto"
             }
         },
         label: function() {
@@ -58,21 +70,53 @@
         },
         oneditprepare: function() {
             var node = this;
-            var autoType = {
+
+            var defaultInOutType = {
                 value: "auto",
-                label: node._("label.autoType"),
+                label: node._("label.defaultInOutType"),
                 hasValue: false
+            }
+            var inplaceType = {
+                value: "inplace",
+                label: node._("label.inplaceType"),
+                hasValue: false
+            }
+            var createTypedOutputTypes = function(inplace = true) {
+                var dynamicTypes = [defaultInOutType];
+                if (inplace) {
+                    dynamicTypes.push(inplaceType);
+                }
+                dynamicTypes.push("msg");
+                return dynamicTypes;
+
             };
-            var givenValType = {
-                value: "input",
-                label: node._("label.givenValType"),
+
+            var defaultStatusType = {
+                value: "auto",
+                label: node._("label.defaultStatusType"),
                 hasValue: false
             };
             $("#node-input-typed-status").typedInput({
                 default: "auto",
-                types: [givenValType, autoType, "msg"],
+                types: [defaultStatusType, "msg"],
                 typeField: $("#node-input-statusType")
             });
+
+            $("#node-input-typed-outputTo").typedInput({
+                default: "auto",
+                types: createTypedOutputTypes(true),
+                typeField: $("#node-input-outputToType")
+            })
+
+            $("#node-input-typed-inputFrom").typedInput({
+                default: "auto",
+                types: [defaultInOutType, "msg"],
+                typeField: $("#node-input-inputFromType")
+            })
+            $("#node-input-typed-inputFrom").typedInput('type', node.inputFromType || node._def.defaults.inputFromType.value);
+            $("#node-input-typed-inputFrom").typedInput('value', node.inputFromVal || node._def.defaults.inputFromVal.value);
+            $("#node-input-typed-outputTo").typedInput('type', node.outputToType || node._def.defaults.outputToType.value);
+            $("#node-input-typed-outputTo").typedInput('value', node.outputToVal || node._def.defaults.outputToVal.value);
 
             if (node.statusType === undefined) {
                 $("#node-input-typed-status").typedInput('type', node._def.defaults.statusType.value);
@@ -94,36 +138,61 @@
                     $("#node-tostatus-line").show();
                 } else {
                     $("#node-tostatus-line").hide();
-                    node.statusType = "auto";
-                    node.statusVal = "";
+                    node.statusType = node._def.defaults.statusType.value;
+                    node.statusVal = node._def.defaults.statusVal.value;
                     $("#node-input-typed-status").typedInput('type', node.statusType);
                     $("#node-input-typed-status").typedInput('value', node.statusVal);
                 }
             });
 
             $('#node-input-mode').change(function(e) {
-                if ($('option:selected', this).val() === "GENERATE-NANOID") {
-                    $('#node-nodeid-customs-line').hide();
-                    $('#node-nodeid-line').show()
+                var inplace = true;
+                switch ($('option:selected', this).val()) {
+                    case "GENERATE-NANOID":
+                        $('#node-nodeid-customs-line').hide();
+                        $('#node-nodeid-line').show()
+                        inplace = false;
+                        break;
+
+                    case "GENERATE-SHORTID":
+                    case "GENERATE-UUID4":
+                        inplace = false;
+                        // break;
+
+                    default:
+                        $('#node-nodeid-line').hide()
+                        node.charset = node._def.defaults.charset.value;
+                        node.charlen = node._def.defaults.charlen.value;
+                        $('#node-input-charset').val(node.charset);
+                        $('#node-input-charlen').val(node.charlen);
+                        break;
+                }
+                $("#node-input-typed-outputTo").typedInput('types', createTypedOutputTypes(inplace));
+                if (inplace) {
+                    $('#node-inputs-line').show()
                 } else {
-                    $('#node-nodeid-line').hide()
-                    node.charset = "DEFAULT";
-                    $('#node-input-charset').val(node.charset);
+                    $('#node-inputs-line').hide()
+                    node.inputFromType = node._def.defaults.inputFromType.value;
+                    node.inputFromVal = node._def.defaults.inputFromVal.value;
+                    $("#node-input-typed-inputFrom").typedInput('type', node.inputFromType);
+                    $("#node-input-typed-inputFrom").typedInput('value', node.inputFromVal);
                 }
             });
             $('#node-input-charset').change(function(e) {
                 if ($('option:selected', this).val() === "CUSTOM") {
-                    $("#node-input-customs").val(node.customs || "");
+                    $("#node-input-customs").val(node.customs || node._def.defaults.customs.value);
                     $('#node-nodeid-customs-line').show();
                 } else {
                     $('#node-nodeid-customs-line').hide();
-                    node.customs = "";
-                    $("#node-input-customs").val("");
+                    node.customs = node._def.defaults.customs.value;
+                    $("#node-input-customs").val(node.customs);
                 }
             });
         },
         oneditsave: function() {
             $("#node-input-statusVal").val($("#node-input-typed-status").typedInput('value'));
+            $("#node-input-inputFromVal").val($("#node-input-typed-inputFrom").typedInput('value'));
+            $("#node-input-outputToVal").val($("#node-input-typed-outputTo").typedInput('value'));
         }
     });
 </script>
@@ -134,6 +203,7 @@
         <select type="text" id="node-input-mode" style="width:70%">
             <option value="ENCODE" data-i18n="label.mode._encode"></option>
             <option value="DECODE" data-i18n="label.mode._decode"></option>
+            <option value="GENERATE-UUID4" data-i18n="label.mode._uuid"></option>
             <option value="GENERATE-SHORTID" data-i18n="label.mode._shortid"></option>
             <option value="GENERATE-NANOID" data-i18n="label.mode._nanoid"></option>
         </select>
@@ -162,6 +232,22 @@
             <label for="node-input-charlen"><i class="fa fa-puzzle-piece"></i> <span data-i18n="label.charlen.title"></span></label>
             <input type="number" min="2" max="32" id="node-input-charlen" style="text-align:end; width:70px !important" oninput="this.value = Math.min(this.max, Math.max(this.min, this.value))">
         </div>
+    </div>
+
+    <hr>
+
+    <div class="form-row" id="node-inputs-line">
+        <label for="node-input-typed-inputFrom"><i class="fa fa-sign-in"></i> <span data-i18n="label.inputFrom"></span></label>
+        <input id="node-input-typed-inputFrom" type="text" style="width: 70%">
+        <input id="node-input-inputFromVal" type="hidden">
+        <input id="node-input-inputFromType" type="hidden">
+    </div>
+
+    <div class="form-row" id="node-outputs-line">
+        <label for="node-input-typed-outputTo"><i class="fa fa-sign-out"></i> <span data-i18n="label.outputTo"></span></label>
+        <input id="node-input-typed-outputTo" type="text" style="width: 70%">
+        <input id="node-input-outputToVal" type="hidden">
+        <input id="node-input-outputToType" type="hidden">
     </div>
 
     <hr>

@@ -3,6 +3,7 @@
         "mode": {
             "title": "モード",
             "undefiend": "何かエラーが起きたようです。モードを確認してください。",
+            "_uuid": "ランダムな UUID v4 を生成",
             "_nanoid": "ランダムな FriendlyID(nanoid) を生成",
             "_shortid": "ランダムな FriendlyID(short-uuid) を生成",
             "_encode": "UUID から FriendlyID(short-uuid) に変換",
@@ -24,7 +25,10 @@
             "title": "サイズ"
         },
         "tostatus": "ノード状態 (64 文字)",
-        "autoType": "出力と同じ",
-        "givenValType": "入力と同じ"
+        "defaultStatusType": "出力と同じ",
+        "inputFrom": "入力元",
+        "outputTo": "出力先",
+        "defaultInOutType": "msg.payload",
+        "inplaceType": "入力プロパティに上書き"
     }
 }
