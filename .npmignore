@@ -106,3 +106,4 @@ dist
 # Git documents
 .images/
 docker-compose.yaml
+.git/
