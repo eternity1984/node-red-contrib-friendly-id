@@ -35,19 +35,19 @@ describe("friendly-id Node", function() {
                 type: "friendly-id",
                 mode: "ENCODE",
                 wires: [
-                    ["n2"]
+                    ["nh"]
                 ]
             },
             {
-                id: "n2",
+                id: "nh",
                 type: "helper"
             }
         ];
 
         helper.load(friendlyIdNode, flow, function() {
             var n1 = helper.getNode("n1");
-            var n2 = helper.getNode("n2");
-            n2.on("input", function(msg) {
+            var nh = helper.getNode("nh");
+            nh.on("input", function(msg) {
                 try {
                     msg.should.have.property('payload', 'mhvXdrZT4jP5T8vBxuvm75');
                     done();
@@ -65,19 +65,19 @@ describe("friendly-id Node", function() {
                 type: "friendly-id",
                 mode: "DECODE",
                 wires: [
-                    ["n2"]
+                    ["nh"]
                 ]
             },
             {
-                id: "n2",
+                id: "nh",
                 type: "helper"
             }
         ];
 
         helper.load(friendlyIdNode, flow, function() {
             var n1 = helper.getNode("n1");
-            var n2 = helper.getNode("n2");
-            n2.on("input", function(msg) {
+            var nh = helper.getNode("nh");
+            nh.on("input", function(msg) {
                 try {
                     msg.should.have.property('payload', 'a44521d0-0fb8-4ade-8002-3385545c3318');
                     done();
@@ -88,35 +88,36 @@ describe("friendly-id Node", function() {
             n1.receive({ payload: "mhvXdrZT4jP5T8vBxuvm75" });
         });
     });
+
+    it('should generate a random', function(done) {
+        var flow = [{
+                id: "n1",
+                type: "friendly-id",
+                mode: "GENERATE-UUID4",
+                wires: [
+                    ["nh"]
+                ]
+            },
+            {
+                id: "nh",
+                type: "helper"
+            }
+        ];
+
+        helper.load(friendlyIdNode, flow, function() {
+            var n1 = helper.getNode("n1");
+            var nh = helper.getNode("nh");
+            nh.on("input", function(msg) {
+                try {
+                    msg.should.have.ownProperty('payload');
+                    msg.payload.should.match(/^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i)
+                    done();
+                } catch (err) {
+                    done(err);
+                }
+            });
+            n1.receive({});
+        });
+    });
+
 });
-
-// it('should make payload lower case', function(done) {
-//     var flow = [{
-//             id: "n1",
-//             type: "lower-case",
-//             name: "test name",
-//             wires: [
-//                 ["n2"]
-//             ]
-//         },
-//         {
-//             id: "n2",
-//             type: "helper"
-//         }
-//     ];
-
-//     helper.load(friendlyIdNode, flow, function() {
-//         var n2 = helper.getNode("n2");
-//         var n1 = helper.getNode("n1");
-//         n2.on("input", function(msg) {
-//             msg.should.have.property('payload', 'uppercase');
-//             done();
-//         });
-//         n1.receive({ payload: "UpperCase" });
-//     });
-// });
-
-
-/**
- * [{"id":"n1","type":"friendly-id","name":"","mode":"GENERATE-NANOID","charlen":21,"charset":"DEFAULT","customs":"","tostatus":false,"statusVal":"","statusType":"auto","inputFromVal":"","inputFromType":"auto","outputToVal":"","outputToType":"auto", "wires":[[]]}]
- */

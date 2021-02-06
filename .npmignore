@@ -108,4 +108,7 @@ dist
 .git/
 test/
 docker-compose.yaml
-.travis.yml
+
+# CI
+.circleci/
+test-results.xml
