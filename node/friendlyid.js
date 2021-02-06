@@ -8,6 +8,7 @@ module.exports = function(RED) {
     class FriendlyIdNode {
         constructor(definition) {
             RED.nodes.createNode(this, definition)
+            this.definition = definition;
             var node = this
 
             if (definition.tostatus) {
@@ -17,40 +18,44 @@ module.exports = function(RED) {
             node.on('close', function() {
                 node.status({})
             })
-            node.on('input', function(msg, send, done) {
-                send = send || (() => node.send.apply(node, arguments))
+            this.on("input", this.input.bind(this));
+        }
 
-                request(node, msg, definition, function(data, err) {
-                    if (err) {
-                        if (done) {
-                            done(err)
-                        } else {
-                            node.error(err, msg)
-                        }
-                        if (definition.tostatus) {
-                            node.status({ fill: 'red', shape: 'dot', text: 'Failed' })
-                        }
+        input(msg, send, done) {
+            let node = this;
+            let definition = this.definition
+            send = send || (() => node.send.apply(node, arguments))
+
+            request(node, msg, definition, function(data, err) {
+                if (err) {
+                    if (done) {
+                        done(err)
                     } else {
-                        setOutputVal(node, msg, definition, data)
-
-                        send(msg)
-                        if (done) {
-                            done()
-                        }
-                        if (definition.tostatus) {
-                            var output = ''
-                            if (definition.statusType === 'auto') {
-                                output = data
-                            } else if (definition.statusType === 'msg') {
-                                output = RED.util.getMessageProperty(msg, definition.statusVal)
-                            }
-                            if (output.length > 64) {
-                                output = output.substr(0, 64) + '...'
-                            }
-                            node.status({ fill: 'grey', shape: 'dot', text: output })
-                        }
+                        node.error(err, msg)
                     }
-                })
+                    if (definition.tostatus) {
+                        node.status({ fill: 'red', shape: 'dot', text: 'Failed' })
+                    }
+                } else {
+                    setOutputVal(node, msg, definition, data)
+
+                    send(msg)
+                    if (done) {
+                        done()
+                    }
+                    if (definition.tostatus) {
+                        var output = ''
+                        if (definition.statusType === 'auto') {
+                            output = data
+                        } else if (definition.statusType === 'msg') {
+                            output = RED.util.getMessageProperty(msg, definition.statusVal)
+                        }
+                        if (output.length > 64) {
+                            output = output.substr(0, 64) + '...'
+                        }
+                        node.status({ fill: 'grey', shape: 'dot', text: output })
+                    }
+                }
             })
         }
     }
