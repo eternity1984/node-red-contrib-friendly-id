@@ -1,143 +1,126 @@
 module.exports = function(RED) {
     'use strict'
-
-    const shortid = require('short-uuid')
-    const { nanoid, customAlphabet } = require('nanoid')
-    const nanodict = require('nanoid-dictionary')
+    const makeAction = require('./lib/actions')
+    const makeStatus = require('./lib/status')
 
     class FriendlyIdNode {
-        constructor(definition) {
-            RED.nodes.createNode(this, definition)
-            this.definition = definition;
-            var node = this
+        constructor(config) {
+            this.config = config;
+            this.nodeStatus = makeStatus(this, config)
+            RED.nodes.createNode(this, config)
 
-            if (definition.tostatus) {
-                node.status({ fill: 'grey', shape: 'ring' })
-            }
+            this.nodeStatus.init()
 
-            node.on('close', function() {
-                node.status({})
-            })
-            this.on("input", this.input.bind(this));
+            this.on("input", this.onInput.bind(this));
+            this.on('close', this.onClose.bind(this));
         }
 
-        input(msg, send, done) {
-            let node = this;
-            let definition = this.definition
-            send = send || (() => node.send.apply(node, arguments))
+        onClose() {
+            this.nodeStatus.close()
+        }
 
-            request(node, msg, definition, function(data, err) {
+        onInput(msg, send, done) {
+            this.request(msg, (data, err) => {
                 if (err) {
-                    if (done) {
-                        done(err)
-                    } else {
-                        node.error(err, msg)
-                    }
-                    if (definition.tostatus) {
-                        node.status({ fill: 'red', shape: 'dot', text: 'Failed' })
-                    }
+                    this.onError(msg, send, done, err)
                 } else {
-                    setOutputVal(node, msg, definition, data)
-
-                    send(msg)
-                    if (done) {
-                        done()
-                    }
-                    if (definition.tostatus) {
-                        var output = ''
-                        if (definition.statusType === 'auto') {
-                            output = data
-                        } else if (definition.statusType === 'msg') {
-                            output = RED.util.getMessageProperty(msg, definition.statusVal)
-                        }
-                        if (output.length > 64) {
-                            output = output.substr(0, 64) + '...'
-                        }
-                        node.status({ fill: 'grey', shape: 'dot', text: output })
-                    }
+                    this.onSuccess(msg, send, done, data)
                 }
             })
         }
-    }
 
-    function getInputVal(node, msg, definition) {
-        var target = 'payload' // auto
-        if (definition.inputFromType === 'msg') {
-            target = definition.inputFromVal
-        }
-        var input = RED.util.getMessageProperty(msg, target)
-        if (input === undefined) {
-            throw Error('Missing input property: msg.' + target)
-        }
-        return input
-    }
+        onSuccess(msg, send, done, data) {
+            // For maximum backwards compatibility, check that send exists.
+            // If this node is installed in Node-RED 0.x, it will need to
+            // fallback to using `node.send`
+            send = send || function() { this.send.apply(this, arguments) }
 
-    function setOutputVal(node, msg, definition, data) {
-        var target = 'payload' // auto
-        if ((definition.outputToType === 'inplace') && (definition.inputFromType === 'msg')) {
-            target = definition.inputFromVal
-        } else if (definition.outputToType === 'msg') {
-            target = definition.outputToVal
-        }
-        RED.util.setMessageProperty(msg, target, data, true)
-        return target
-    }
-
-    function generateNanoId(node, msg, definition) {
-        var size = Number(definition.charlen)
-        switch (definition.charset) {
-            case 'DEFAULT':
-                return nanoid(size)
-
-            case 'NUMERIC':
-                return customAlphabet(nanodict.numbers, size)()
-
-            case 'LOWERCASE':
-                return customAlphabet(nanodict.lowercase, size)()
-
-            case 'UPPERCASE':
-                return customAlphabet(nanodict.uppercase, size)()
-
-            case 'ALPHANUMERIC':
-                return customAlphabet(nanodict.numbers + nanodict.lowercase + nanodict.uppercase, size)()
-
-            case 'NO-LOOKALIKES':
-                return customAlphabet(nanodict.nolookalikes, size)()
-
-            case 'NO-LOOKALIKES-SAFE':
-                return customAlphabet(nanodict.nolookalikesSafe, size)()
-
-            case 'CUSTOM':
-                return customAlphabet(definition.customs, size)()
-        }
-    }
-
-    function request(node, msg, definition, callback) {
-        try {
-            var mode = definition.mode
-            if (mode === 'GENERATE-NANOID') {
-                callback(generateNanoId(node, msg, definition), null)
-            } else if (mode === 'GENERATE-SHORTID') {
-                callback(shortid().new(), null)
-            } else if (mode === 'GENERATE-UUID4') {
-                callback(shortid().uuid(), null)
-            } else {
-                // converts UUIDs using short-uuid
-                var input = getInputVal(node, msg, definition)
-                if (mode === 'DECODE') {
-                    // friendly-id -> uuid
-                    callback(shortid().toUUID(input), null)
-                } else if (mode === 'ENCODE') {
-                    // uuid -> friendly-id
-                    callback(shortid().fromUUID(input), null)
-                } else {
-                    // undefined
-                    callback(null, Error(RED._('label.mode.undefiend')))
-                }
+            this.setMessageProperty(msg, this.config, data)
+            send(msg)
+            if (done) {
+                done()
             }
-        } catch (e) {
-            callback(null, e)
+            let text = this.getStatusMessage(msg, this.config, data)
+            this.nodeStatus.success(text)
         }
+
+        onError(msg, send, done, err) {
+            if (done) {
+                done(err)
+            } else {
+                this.error(err, msg)
+            }
+            this.nodeStatus.error(err)
+        }
+
+        /**
+         * 
+         * @param {*} msg 
+         * @param {(data, err) => void} callback 
+         */
+        request(msg, callback) {
+            try {
+                let action = makeAction(this.config)
+                if (action === undefined) {
+                    throw Error(RED._('label.mode.undefined'))
+                }
+                let data = action.exec(this.getMessageProperty(msg, this.config))
+                callback(data, null)
+
+            } catch (e) {
+                callback(null, e)
+            }
+        }
+
+        getStatusMessage(msg, config, data) {
+            var output = ''
+            if (config.statusType === 'auto') {
+                output = data
+            } else if (config.statusType === 'msg') {
+                output = RED.util.getMessageProperty(msg, config.statusVal)
+            }
+            return output
+        }
+
+        /**
+         * 
+         * @param {Object} msg 
+         * 		the message object
+         * @param {Object} config 
+         * 		the config object
+         * @returns {String}
+         */
+        getMessageProperty(msg, config) {
+            let prop = "payload" // auto
+            if (config.inputFromType === 'msg') {
+                prop = config.inputFromVal
+            }
+            let input = RED.util.getMessageProperty(msg, prop)
+            if (input === undefined) {
+                throw Error('Missing input property: msg.' + target)
+            }
+            return input
+        }
+
+        /**
+         * 
+         * @param {Object} msg	
+         * 		the message object
+         * @param {Object} config
+         * 		the config object
+         * @param {*} value
+         * 		the value to set
+         */
+        setMessageProperty(msg, config, value) {
+            let prop = "payload" // auto
+            if ((config.outputToType === 'inplace') && (config.inputFromType === 'msg')) {
+                prop = config.inputFromVal
+            } else if (config.outputToType === 'msg') {
+                prop = config.outputToVal
+            }
+            RED.util.setMessageProperty(msg, prop, value, true)
+        }
+
     }
     RED.nodes.registerType('friendly-id', FriendlyIdNode)
 }
