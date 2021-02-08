@@ -9,7 +9,8 @@
 [![dependencies Status][img-depends-status]][url-david-dm]
 [![Total alerts][img-lgtm-alerts]][url-lgtm]
 [![Language grade: JavaScript][img-lgtm-lang-grade]][url-lgtm]
-[![Maintainability][img-codeclimate]][url-codeclimate]
+[![Maintainability][img-codeclimate-m]][url-codeclimate]
+[![Maintainability][img-codeclimate-t]][url-codeclimate]
 ...
 
 
@@ -107,8 +108,9 @@ This project is released under the [MIT License](LICENSE).
 
 [img-lgtm-alerts]: https://img.shields.io/lgtm/alerts/g/eternity1984/node-red-contrib-friendly-id.svg?logo=lgtm&logoWidth=18
 [img-lgtm-lang-grade]: https://img.shields.io/lgtm/grade/javascript/g/eternity1984/node-red-contrib-friendly-id.svg?logo=lgtm&logoWidth=18
-[img-codeclimate]: https://api.codeclimate.com/v1/badges/40c8fc69eb0934cf5e8f/maintainability
-[url-codeclimate]: https://codeclimate.com/github/eternity1984/node-red-contrib-friendly-id/maintainability
+[img-codeclimate-m]: https://api.codeclimate.com/v1/badges/40c8fc69eb0934cf5e8f/maintainability
+[img-codeclimate-t]: https://api.codeclimate.com/v1/badges/40c8fc69eb0934cf5e8f/test_coverage
+[url-codeclimate]: https://codeclimate.com/github/eternity1984/node-red-contrib-friendly-id/
 
 [img-standard]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
 [url-standard]: https://standardjs.com

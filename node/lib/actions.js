@@ -29,9 +29,7 @@ class Action {
      * @param {String} input
      * @returns {String}
      */
-  exec (input) {
-    throw Error('Not implemented yet')
-  }
+  exec (input) {}
 
   /**
      * @returns {Boolean}
@@ -76,10 +74,12 @@ class GenerateNanoID extends Action {
   }
 
   exec (input) {
-    const size = Number(this.config.charlen)
-    if (this.config.charset in this.charsets) {
-      return customAlphabet(this.charsets[this.config.charset], size)()
-    } else if (this.config.charset === 'CUSTOM') {
+    const charlen = this.config.charlen || 21
+    const charset = this.config.charset || 'DEFAULT'
+    const size = Number(charlen)
+    if (charset in this.charsets) {
+      return customAlphabet(this.charsets[charset], size)()
+    } else if (charset === 'CUSTOM') {
       return customAlphabet(this.config.customs, size)()
     } else {
       // DEFAULT
