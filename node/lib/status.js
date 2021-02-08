@@ -4,76 +4,71 @@
  * @param {Object} config
  * @returns {NodeStatus}
  */
-module.exports = function (node, config) {
-  return new NodeStatus((config.tostatus) ? new ActiveReporter(node) : new Reporter())
+module.exports = function(node, config) {
+    return new NodeStatus((config.tostatus) ? new ActiveReporter(node) : new Reporter())
 }
 
 class NodeStatus {
-  constructor (reporter) {
-    this.reporter = reporter
-  }
+    constructor(reporter) {
+        this.reporter = reporter
+    }
 
-  init () {
-    this.reporter.init()
-  }
+    init() {
+        this.reporter.init()
+    }
 
-  close () {
-    this.reporter.close()
-  }
+    close() {
+        this.reporter.close()
+    }
 
-  success (text) {
-    this.reporter.success(text)
-  }
-
-  error (text) {
-    this.reporter.error(text)
-  }
+    show(data, err) {
+        this.reporter.show(data, err)
+    }
 }
 
 class Reporter {
-  init () {}
+    init() {}
 
-  close () {}
+    close() {}
 
-  success (text) {}
-
-  error (text) {}
+    show(data, err) {}
 }
 
 class ActiveReporter extends Reporter {
-  constructor (node) {
-    super()
-    this.node = node
-  }
+    constructor(node) {
+        super()
+        this.node = node
+    }
 
-  init () {
-    this.node.status({ fill: 'grey', shape: 'ring' })
-  }
+    init() {
+        this.node.status({ fill: 'grey', shape: 'ring' })
+    }
 
-  close () {
-    this.node.status({})
-  }
+    close() {
+        this.node.status({})
+    }
 
-  /**
+    /**
      *
      * @param {String} text
      * @param {Int} exceedsIf
      * @returns {String}
      */
-  withMaxLength (text, exceedsIf = 64) {
-    if (text.length > exceedsIf) {
-      text = text.substr(0, exceedsIf) + '...'
+    withMaxLength(text, exceedsIf = 64) {
+        if (text.length > exceedsIf) {
+            text = text.substr(0, exceedsIf) + '...'
+        }
+        return text
     }
-    return text
-  }
 
-  success (text) {
-    text = this.withMaxLength(text)
-    this.node.status({ fill: 'grey', shape: 'dot', text: text })
-  }
+    show(data, err) {
+        let fill = 'grey'
+        if (err) {
+            fill = 'red'
+            data = err.toString()
+        }
+        data = this.withMaxLength(data)
+        this.node.status({ fill: fill, shape: 'dot', text: data })
+    }
 
-  error (text) {
-    text = this.withMaxLength(text)
-    this.node.status({ fill: 'red', shape: 'dot', text: text })
-  }
 }
