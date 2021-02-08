@@ -46,7 +46,8 @@
         "standard-version": "^8.0.0"
     },
     "scripts": {
-        "test": "standard --fix && mocha test/**/*_spec.js --reporter mocha-junit-reporter"
+        "test": "standard --fix && mocha test/**/*_spec.js",
+        "cover": "nyc --reporter=lcov --reporter=text mocha --timeout 5000"
     },
     "publishConfig": {
         "access": "public"

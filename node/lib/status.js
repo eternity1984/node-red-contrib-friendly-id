@@ -54,14 +54,26 @@ class ActiveReporter extends Reporter {
     this.node.status({})
   }
 
-  success (text) {
-    if (text.length > 64) {
-      text = text.substr(0, 64) + '...'
+  /**
+     *
+     * @param {String} text
+     * @param {Int} exceedsIf
+     * @returns {String}
+     */
+  withMaxLength (text, exceedsIf = 64) {
+    if (text.length > exceedsIf) {
+      text = text.substr(0, exceedsIf) + '...'
     }
+    return text
+  }
+
+  success (text) {
+    text = this.withMaxLength(text)
     this.node.status({ fill: 'grey', shape: 'dot', text: text })
   }
 
   error (text) {
-    this.node.status({ fill: 'red', shape: 'dot', text: 'Failed' })
+    text = this.withMaxLength(text)
+    this.node.status({ fill: 'red', shape: 'dot', text: text })
   }
 }

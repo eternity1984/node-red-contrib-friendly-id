@@ -50,7 +50,7 @@ module.exports = function (RED) {
       } else {
         this.error(err, msg)
       }
-      this.nodeStatus.error(err)
+      this.nodeStatus.error(err.toString())
     }
 
     /**
@@ -64,7 +64,11 @@ module.exports = function (RED) {
         if (action === undefined) {
           throw Error(RED._('label.mode.undefined'))
         }
-        const data = action.exec(this.getMessageProperty(msg, this.config))
+        let input = ''
+        if (!(action.ignoreInput())) {
+          input = this.getMessageProperty(msg, this.config)
+        }
+        const data = action.exec(input)
         callback(data, null)
       } catch (e) {
         callback(null, e)
@@ -77,6 +81,9 @@ module.exports = function (RED) {
         output = data
       } else if (config.statusType === 'msg') {
         output = RED.util.getMessageProperty(msg, config.statusVal)
+        if (output === undefined) {
+          throw Error('Missing status property: msg.' + config.statusVal)
+        }
       }
       return output
     }

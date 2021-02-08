@@ -32,17 +32,32 @@ class Action {
   exec (input) {
     throw Error('Not implemented yet')
   }
+
+  /**
+     * @returns {Boolean}
+     */
+  ignoreInput () {
+    return false
+  }
 }
 
 class GenerateUUID4 extends Action {
   exec (input) {
     return shortid().uuid()
   }
+
+  ignoreInput () {
+    return true
+  }
 }
 
 class GenerateShortID extends Action {
   exec (input) {
     return shortid().new()
+  }
+
+  ignoreInput () {
+    return true
   }
 }
 
@@ -70,6 +85,10 @@ class GenerateNanoID extends Action {
       // DEFAULT
       return nanoid(size)
     }
+  }
+
+  ignoreInput () {
+    return true
   }
 }
 
