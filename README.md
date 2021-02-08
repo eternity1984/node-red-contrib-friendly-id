@@ -1,13 +1,18 @@
 [![platform][img-platform]][url-nodered]
-[![Release Ver][img-release-ver]][url-my-flow]
+[![npm version][img-npm-version]][url-my-flow]
 [![install size][img-install-size]][url-packagephobia]
 [![downloads][img-downloads-current]][url-npm-package]
 [![downloads][img-downloads-total]][url-npm-package]
-![npm version][img-npm-version]
 [![License][img-license]](License)
+[![JavaScript Style Guide][img-standard]][url-standard]
+[![circle-ci][img-circleci]][url-circleci]
 [![dependencies Status][img-depends-status]][url-david-dm]
 [![Total alerts][img-lgtm-alerts]][url-lgtm]
-[![Language grade: JavaScript][img-lgtm-lang-grade]][url-lgtm] ...
+[![Language grade: JavaScript][img-lgtm-lang-grade]][url-lgtm]
+[![Maintainability][img-codeclimate-m]][url-codeclimate]
+[![Maintainability][img-codeclimate-t]][url-codeclimate]
+...
+
 
 
 # node-red-contrib-friendly-id
@@ -30,7 +35,7 @@ $ npm install node-red-contrib-friendly-id
 
 ## v0.2.x migration [example flows]
 In version `0.1.x`, the node was depend on a `payload` property (`msg.payload`).  
-In version `0.2.x`, these restrictions will be lifted to prevents node wires from becoming complicated.
+In version `0.2.x`, Input / output can be specified, preventing node wiring from becoming complicated.
 
 
 **Okay, so let's walk through some use case scenarios...**
@@ -94,15 +99,21 @@ This project is released under the [MIT License](LICENSE).
 
 
 [img-platform]: https://img.shields.io/badge/platform-Node--RED-brown.svg
-[img-release-ver]: https://img.shields.io/npm/v/node-red-contrib-friendly-id?color=limegreen&label=release
 [img-install-size]: https://packagephobia.com/badge?p=node-red-contrib-friendly-id
 [img-downloads-current]: https://img.shields.io/npm/dm/node-red-contrib-friendly-id.svg
 [img-downloads-total]: https://img.shields.io/npm/dt/node-red-contrib-friendly-id.svg
-[img-npm-version]: https://img.shields.io/badge/npm-6.9.0-blue.svg
+[img-npm-version]: https://img.shields.io/npm/v/node-red-contrib-friendly-id
 [img-license]: https://img.shields.io/github/license/eternity1984/node-red-contrib-friendly-id
 [img-depends-status]: https://status.david-dm.org/gh/eternity1984/node-red-contrib-friendly-id.svg
+
 [img-lgtm-alerts]: https://img.shields.io/lgtm/alerts/g/eternity1984/node-red-contrib-friendly-id.svg?logo=lgtm&logoWidth=18
 [img-lgtm-lang-grade]: https://img.shields.io/lgtm/grade/javascript/g/eternity1984/node-red-contrib-friendly-id.svg?logo=lgtm&logoWidth=18
+[img-codeclimate-m]: https://api.codeclimate.com/v1/badges/40c8fc69eb0934cf5e8f/maintainability
+[img-codeclimate-t]: https://api.codeclimate.com/v1/badges/40c8fc69eb0934cf5e8f/test_coverage
+[url-codeclimate]: https://codeclimate.com/github/eternity1984/node-red-contrib-friendly-id/
+
+[img-standard]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
+[url-standard]: https://standardjs.com
 
 [url-nodered]: https://nodered.org/
 [url-my-flow]: https://flows.nodered.org/node/node-red-contrib-friendly-id
@@ -110,3 +121,6 @@ This project is released under the [MIT License](LICENSE).
 [url-npm-package]: https://www.npmjs.com/package/node-red-contrib-friendly-id
 [url-david-dm]: https://david-dm.org/eternity1984/node-red-contrib-friendly-id
 [url-lgtm]: https://lgtm.com/projects/g/eternity1984/node-red-contrib-friendly-id/
+
+[img-circleci]: https://circleci.com/gh/eternity1984/node-red-contrib-friendly-id.svg?style=shield
+[url-circleci]: https://app.circleci.com/pipelines/github/eternity1984/node-red-contrib-friendly-id

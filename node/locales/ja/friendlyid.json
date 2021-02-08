@@ -2,7 +2,7 @@
     "label": {
         "mode": {
             "title": "モード",
-            "undefiend": "何かエラーが起きたようです。モードを確認してください。",
+            "undefined": "何かエラーが起きたようです。モードを確認してください。",
             "_uuid": "ランダムな UUID v4 を生成",
             "_nanoid": "ランダムな FriendlyID(nanoid) を生成",
             "_shortid": "ランダムな FriendlyID(short-uuid) を生成",

@@ -105,5 +105,10 @@ dist
 
 # Git documents
 .images/
-docker-compose.yaml
 .git/
+test/
+docker-compose.yaml
+
+# CI
+.circleci/
+test-results.xml
